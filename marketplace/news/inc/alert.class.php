@@ -180,10 +180,10 @@ class PluginNewsAlert extends CommonDBTM {
    public static function findAllToNotify($params = []) {
       global $DB;
 
-      $p['show_only_login_alerts'] = false;
-      $p['show_hidden_alerts']     = false;
-      $p['show_helpdesk_alerts']   = false;
-      $p['entities_id']            = false;
+      $p['show_only_login_alerts']     = false;
+      $p['show_hidden_alerts']         = false;
+      $p['show_only_helpdesk_alerts']  = false;
+      $p['entities_id']                = false;
       foreach ($params as $key => $value) {
          $p[$key] = $value;
       }
@@ -214,7 +214,7 @@ class PluginNewsAlert extends CommonDBTM {
       $login_show_hidden_sql = " `$utable`.`id` IS NULL ";
       $entity_sql            = "";
       $show_helpdesk_sql     = '';
-      if (isset($_SESSION['glpiID'])) {
+      if (isset($_SESSION['glpiID']) && isset($_SESSION['glpiactiveprofile']['id'])) {
          $targets_sql = "AND (
                            `$ttable`.`itemtype` = 'Profile'
                            AND (
@@ -236,7 +236,7 @@ class PluginNewsAlert extends CommonDBTM {
 
       //If the alert must be displayed on helpdesk form : filter by ticket's entity
       //and not the current entity
-      if ($p['show_helpdesk_alerts']) {
+      if ($p['show_only_helpdesk_alerts']) {
          $show_helpdesk_sql = " AND `$table`.`is_displayed_onhelpdesk`='1'";
       }
       if (!$p['show_only_login_alerts']) {
@@ -416,7 +416,7 @@ class PluginNewsAlert extends CommonDBTM {
 
    static function displayOnCentral() {
       echo "<tr><th colspan='2'>";
-      self::displayAlerts(['show_only_login_alerts' => false]);
+      self::displayAlerts(['show_only_helpdesk_alerts' => Session::getCurrentInterface() == 'helpdesk']);
       echo "</th></tr>";
    }
 
@@ -430,10 +430,10 @@ class PluginNewsAlert extends CommonDBTM {
    static function displayAlerts($params = []) {
       global $CFG_GLPI;
 
-      $p['show_only_login_alerts'] = false;
-      $p['show_hidden_alerts']     = false;
-      $p['show_helpdesk_alerts']   = false;
-      $p['entities_id']            = false;
+      $p['show_only_login_alerts']     = false;
+      $p['show_hidden_alerts']         = false;
+      $p['show_only_helpdesk_alerts']  = false;
+      $p['entities_id']                = false;
       foreach ($params as $key => $value) {
          $p[$key] = $value;
       }
@@ -456,12 +456,12 @@ class PluginNewsAlert extends CommonDBTM {
             if ($p['show_only_login_alerts']) {
                echo "<a class='plugin_news_alert-toggle'></a>";
             }
-            echo "<div class='plugin_news_alert-title'>";
+            echo "<div class='plugin_news_alert-title ui-widget-header'>";
             echo "<span class='plugin_news_alert-icon type_$type'></span>";
             echo "<div class='plugin_news_alert-title-content'>$title</div>";
             echo "<div class='plugin_news_alert-date'>$date_start$date_end</div>";
             echo "</div>";
-            echo "<div class='plugin_news_alert-content'>$content</div>";
+            echo "<div class='plugin_news_alert-content ui-widget-content'>$content</div>";
             echo "</div>";
          }
       }
@@ -502,9 +502,9 @@ class PluginNewsAlert extends CommonDBTM {
          $entities_id = isset($params['item']->fields['entities_id'])
             ? $params['item']->fields['entities_id']
             : false; // false to use current entity
-         self::displayAlerts(['show_helpdesk_alerts' => true,
-                              'show_hidden_alerts'   => false,
-                              'entities_id'          => $entities_id
+         self::displayAlerts(['show_only_helpdesk_alerts'   => true,
+                              'show_hidden_alerts'          => false,
+                              'entities_id'                 => $entities_id
                              ]);
          echo "</br>";
       }

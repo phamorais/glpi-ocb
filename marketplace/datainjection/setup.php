@@ -28,7 +28,7 @@
  @since     2009
  ---------------------------------------------------------------------- */
 
-define ('PLUGIN_DATAINJECTION_VERSION', '2.8.1');
+define ('PLUGIN_DATAINJECTION_VERSION', '2.9.0');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_DATAINJECTION_MIN_GLPI", "9.5");
@@ -146,8 +146,8 @@ function getTypesToInject() {
                         'PluginDatainjectionProfileInjection'                     => 'datainjection',
                         'PluginDatainjectionProfile_UserInjection'                => 'datainjection',
                         'PluginDatainjectionSoftwareInjection'                    => 'datainjection',
-                        'PluginDatainjectionComputer_SoftwareVersionInjection'    => 'datainjection',
-                        'PluginDatainjectionComputer_SoftwareLicenseInjection'    => 'datainjection',
+                        'PluginDatainjectionItem_SoftwareVersionInjection'        => 'datainjection',
+                        'PluginDatainjectionItem_SoftwareLicenseInjection'        => 'datainjection',
                         'PluginDatainjectionSoftwareLicenseInjection'             => 'datainjection',
                         'PluginDatainjectionSoftwareVersionInjection'             => 'datainjection',
                         'PluginDatainjectionSupplierInjection'                    => 'datainjection',
@@ -208,7 +208,8 @@ function getTypesToInject() {
                         'PluginDatainjectionDeviceHardDriveInjection'             => 'datainjection',
                         'PluginDatainjectionDeviceMotherboardInjection'           => 'datainjection',
                         'PluginDatainjectionDeviceDriveInjection'                 => 'datainjection',
-                        'PluginDatainjectionDeviceNetworkCardInjection'           => 'datainjection'
+                        'PluginDatainjectionDeviceNetworkCardInjection'           => 'datainjection',
+                        'PluginDatainjectionApplianceInjection'                   => 'datainjection'
    ];
    //Add plugins
    Plugin::doHook('plugin_datainjection_populate');
