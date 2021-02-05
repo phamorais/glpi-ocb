@@ -1177,10 +1177,7 @@ div#header div#c_logo {
    width: 64px;
    height: 41px;
    float: left;
-   background: url(../pics/fd_logo.png);
-   background-size:  111px 51px;
-   background-repeat: no-repeat;
-   
+   background: url("../pics/fd_logo.png") 0 0 repeat-x;
 }
 
 div#header div#c_logo a {
